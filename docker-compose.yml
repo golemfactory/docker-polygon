@@ -11,7 +11,7 @@ services:
       context: ./build/heimdall
       dockerfile: Dockerfile
     volumes:
-      - "heimdall:/root/.heimdalld"
+      - "/mnt/ethereum/heimdall:/root/.heimdalld"
     ports:
       - "26656:26656"
     depends_on:
@@ -29,7 +29,7 @@ services:
       - ETH1_RPC_URL=http://fullnode.dappnode:8545
     build: *ref_0
     volumes:
-      - "heimdall:/root/.heimdalld"
+      - "/mnt/ethereum/heimdall:/root/.heimdalld"
     depends_on:
       - heimdalld
     restart: unless-stopped
@@ -44,7 +44,7 @@ services:
       - BOOTSTRAP=1
       - MAXPEERS=
     volumes:
-      - "bor:/datadir"
+      - "/mnt/ethereum/bor:/datadir"
     ports:
       - "40303:40303"
       - "40303:40303/udp"
@@ -53,5 +53,3 @@ services:
     restart: unless-stopped
 volumes:
   rabbitmq: {}
-  heimdall: {}
-  bor: {}
