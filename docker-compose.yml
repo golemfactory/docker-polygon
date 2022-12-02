@@ -11,25 +11,25 @@ services:
       context: ./build/heimdall
       dockerfile: Dockerfile
     volumes:
-      - "/mnt/ethereum/heimdall:/root/.heimdalld"
+      - "/data/heimdall:/root/.heimdalld"
     ports:
       - "26656:26656"
     depends_on:
       - rabbitmq
     environment:
-      - MONIKER=
-      - SNAPSHOT_URL=https://matic-blockchain-snapshots.s3-accelerate.amazonaws.com/matic-mainnet/heimdall-snapshot-2022-10-26.tar.gz
+      - MONIKER=GOLEMIKER
+      - SNAPSHOT_URL=https://matic-blockchain-snapshots.s3-accelerate.amazonaws.com/matic-mainnet/heimdall-snapshot-2022-11-30.tar.gz
       - BOOTSTRAP=1
-      - ETH1_RPC_URL=http://fullnode.dappnode:8545
+      - ETH1_RPC_URL=https://geth.golem.network:55555
       - BOOTNODES=
     restart: unless-stopped
   heimdallr:
     environment:
       - REST_SERVER=1
-      - ETH1_RPC_URL=http://fullnode.dappnode:8545
+      - ETH1_RPC_URL=https://geth.golem.network:55555
     build: *ref_0
     volumes:
-      - "/mnt/ethereum/heimdall:/root/.heimdalld"
+      - "/data/heimdall:/root/.heimdalld"
     depends_on:
       - heimdalld
     restart: unless-stopped
@@ -40,14 +40,15 @@ services:
       context: ./build/bor
       dockerfile: Dockerfile
     environment:
-      - SNAPSHOT_URL=https://matic-blockchain-snapshots.s3-accelerate.amazonaws.com/matic-mainnet/bor-fullnode-snapshot-2022-10-21.tar.gz
+      - SNAPSHOT_URL=https://matic-blockchain-snapshots.s3-accelerate.amazonaws.com/matic-mainnet/bor-fullnode-snapshot-2022-11-21.tar.gz
       - BOOTSTRAP=1
       - MAXPEERS=
     volumes:
-      - "/mnt/ethereum/bor:/datadir"
+      - "/data/bor:/datadir"
     ports:
       - "40303:40303"
       - "40303:40303/udp"
+      - "8545:8545"
     depends_on:
       - heimdallr
     restart: unless-stopped
